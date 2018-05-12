@@ -38,8 +38,7 @@ export default () => (<article className={style.About}>
     </dd>
     <dt>The entire state is synced with localState</dt>
     <dd>if you reload the page, all your state will be reloaded as it was when you left it. Elements are carefully
-      serialized/
-      deserialized by type, and you can customize how an individual element is serialized/deserialized.
+      serialized/deserialized by type, and you can customize how an individual element is serialized/deserialized.
     </dd>
     <dt>There are a host of methods for dealing with arrays in state</dt>
     <dd> you can <code>pushTo[arrayProp]</code>, <code>unshiftTo[arrayProp]</code>,change a single element by index, and
@@ -62,6 +61,9 @@ export default () => (<article className={style.About}>
     <dd>managing cross-system effects is never completely simple but you can mix external promises with effects calls
       to keep your state up to date.
     </dd>
+    <dt>You can create methods with access to state and effects in one call</dt>
+    <dd>with <code>addStateSideEffect</code> you can have access to both effects and state in one convenient method.
+    nota as a "Side Effect" method the return value of this method is ignored.</dd>
   </dl>
 
   <h1>A briefing on Freactal</h1>
@@ -125,13 +127,18 @@ export default () => (<article className={style.About}>
     about doing so in contradictory ways, but if you need to flip simple values, you don't have to wait for
     the <code>effect.method().then()</code> to resolve</p>
   <p>Probably one of the least good things about Freactal is that you don't have access to current state
-  outside of the state mutator function; and that function is synchronous. The good news is that inside that mutator
-  you still have access to the events hash from the outer closure. So if you want to "feed back" a state value
+    outside of the state mutator function; and that function is synchronous. The good news is that inside that mutator
+    you still have access to the events hash from the outer closure.</p>
+
+  <p>So if you want to "feed back" a state value
     into an effect, you have to do the following:
   </p>
   <ol>
     <li>write an effect "A" with an argument slot that you intend to satisfy from state</li>
     <li>write an effect "B" that calls "A" from its state mutator. "B"'s mutator then returns
-    state unchanged.</li>
+      state unchanged.
+    </li>
   </ol>
+  <p>in Freactal-seed, this problem is addressed with <code>addStateSideEffect</code>,
+    which pushes state as the second argument.</p>
 </article>);

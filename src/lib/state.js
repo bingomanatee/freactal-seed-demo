@@ -1,6 +1,7 @@
 import {bottle} from 'freactal-seed';
 import SeedFactory from 'freactal-seed';
 import init from './init';
+
 const myBottle = init();
 
 const {getWrapper, injectState, update} = bottle.container;
@@ -16,41 +17,44 @@ mySeed.addArrayPropAndSetEffects('cart');
 mySeed.addObjectAndSetEffect('image');
 mySeed.addSideEffect('loadImages', (effects) => {
   myBottle.container.bigStockAPI.search('fractal')
-             .then((results) => {
-               console.log('loaded ', results);
-               effects.setImages(results);
-             })
-             .catch((err) => console.log('error: ', err));
+          .then((results) => {
+            console.log('loaded ', results);
+            effects.setImages(results);
+          })
+          .catch((err) => console.log('error: ', err));
 });
 
 mySeed.addSideEffect('loadImage', (effects, id) => {
   myBottle.container.bigStockAPI.get(id)
-             .then((data) => effects.setImage(data));
+          .then((data) => effects.setImage(data));
 });
 
-mySeed.addEffect('addImageToCart', (effects) => (state) => {
+mySeed.addStateSideEffect('addImageToCart', (effects, state) => {
   if (state.image) {
     effects.pushToCart({item: state.image, quantity: 1, cart_id: getCartId(state.image)})
            .then(effects.setImage(null));
   } else {
     effects.setImage(null);
   }
-  return state;
 });
 
-mySeed.addEffect('removeItemFromCart', (effect, cartId) => (state) => {
-  if (!state.cart) return state;
+mySeed.addStateSideEffect('removeItemFromCart', (effects, state, cartId) => {
+  if (!(state.cart && state.cart.length)) {
+    return;
+  }
   let newCart = state.cart.reduce((items, item) => {
-    if (item.cart_id !== cartId) items.push(item);
+    if (item.cart_id !== cartId) {
+      items.push(item);
+    }
     return items;
   }, []);
 
-  return Object.assign({}, state, {cart: newCart});
+  effects.setCart(newCart);
 });
 
 mySeed.addSideEffect('moreCartItem', (effects, cartId) => {
-  effects.mapCart((item)=> {
-    if(item.cart_id === cartId) {
+  effects.mapCart((item) => {
+    if (item.cart_id === cartId) {
       ++item.quantity;
     }
     // should really clone for immutability
@@ -58,10 +62,13 @@ mySeed.addSideEffect('moreCartItem', (effects, cartId) => {
   });
 });
 mySeed.addSideEffect('lessCartItem', (effects, cartId) => {
-  effects.mapCart((item)=> {
-    if(item.cart_id === cartId) {
+  effects.mapCart((item) => {
+    if (item.cart_id === cartId) {
       --item.quantity;
-      if (item.quantity < 1) Promise.resolve().then(() => effects.removeItemFromCart(cartId));
+      if (item.quantity < 1) {
+        Promise.resolve()
+               .then(() => effects.removeItemFromCart(cartId));
+      }
     }
     // should really clone for immutability
     return item;
