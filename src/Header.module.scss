@@ -1,0 +1,15 @@
+.Header {
+  background-color: lightgrey;
+  border: 1px solid darkgray;
+  padding: 4px;
+  display: flex;
+  margin: 0;
+  flex-direction: row-reverse;
+}
+
+.Header__link {
+  font-family: Roboto, Helvetica, sans-serif;
+  font-size: 0.9rem;
+  min-width:8rem;
+  padding-left: 2rem;
+}

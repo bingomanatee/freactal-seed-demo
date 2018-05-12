@@ -1,0 +1,16 @@
+.About {
+  padding: 4rem;
+  font-size: 1.25rem;
+  font-family: Roboto, Helvetica, sans-serif; }
+  .About p, .About dd {
+    margin-bottom: 1rem; }
+  .About a, .About a:visited {
+    color: darkblue;
+    text-decoration: underline; }
+  .About dt {
+    font-style: italic;
+    font-weight: bold;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.33rem; }
+
+/*# sourceMappingURL=About.module.css.map */
