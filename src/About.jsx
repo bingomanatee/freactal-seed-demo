@@ -21,6 +21,8 @@ export default () => (<article className={style.About}>
       React
     </li>
     <li>(and of course, React).</li>
+    <li>* and a big thanks for <a href="https://www.netlify.com/" target="_blank">Netlify.com</a> for really
+    cool fast (and free) SPA hosting.</li>
   </ol>
 
   <p>Primarily this is a showcase for <b>Freactal-Seed</b>. </p>

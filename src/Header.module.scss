@@ -10,6 +10,17 @@
 .Header__link {
   font-family: Roboto, Helvetica, sans-serif;
   font-size: 0.9rem;
-  min-width:8rem;
+  min-width: 8rem;
   padding-left: 2rem;
+}
+.Header__link--home {
+ flex-grow: 100;
+  padding-left: 200px;
+}
+
+.GithubRibbon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 0;
 }
