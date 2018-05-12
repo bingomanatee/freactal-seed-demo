@@ -13,4 +13,11 @@
     font-family: Georgia, "Times New Roman", serif;
     font-size: 1.33rem; }
 
+.imageFrame {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  width: 100%;
+  padding: 2rem; }
+
 /*# sourceMappingURL=About.module.css.map */
